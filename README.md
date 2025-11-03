@@ -7,30 +7,41 @@ This repository hosts the Matrix server delegation files required for `staging-4
 - `/.well-known/matrix/server` - Server delegation file
 - `/.well-known/matrix/client` - Client discovery file
 
-## Setup for GitHub Pages
+## Deployment
 
-1. Make this repository **public** (required for free GitHub Pages)
-2. Go to Settings → Pages
-3. Select source branch (usually `main`)
-4. Configure custom domain: `staging-4.dial.wtf`
-5. Add a DNS CNAME record pointing `staging-4.dial.wtf` to `[username].github.io`
+This repository is configured for **Cloudflare Pages** (recommended) or **Netlify** to ensure proper `Content-Type: application/json` headers.
+
+### Why not GitHub Pages?
+GitHub Pages serves files without extensions as `application/octet-stream` (binary), which causes Matrix clients to fail validation. Cloudflare Pages and Netlify support custom headers via `_headers` file.
+
+### Cloudflare Pages Setup
+
+1. Connect this GitHub repository to Cloudflare Pages
+2. Configure build settings:
+   - Build command: (leave empty)
+   - Build output directory: `/`
+3. Add custom domain: `staging-4.dial.wtf`
+4. The `_headers` file will automatically set `Content-Type: application/json`
+
+### Netlify Setup
+
+1. Connect this GitHub repository to Netlify
+2. Configure build settings:
+   - Build command: (leave empty)
+   - Publish directory: `/`
+3. Add custom domain: `staging-4.dial.wtf`
+4. The `_headers` file will automatically set `Content-Type: application/json`
 
 ## Verification
 
-After deployment, verify the files are accessible:
+After deployment, verify the files are accessible with correct content type:
 
 ```bash
+curl -I https://staging-4.dial.wtf/.well-known/matrix/server
+# Should show: Content-Type: application/json
+
 curl https://staging-4.dial.wtf/.well-known/matrix/server
 curl https://staging-4.dial.wtf/.well-known/matrix/client
 ```
 
-Both should return valid JSON responses.
-
-## Alternative: Cloudflare Pages / Netlify
-
-If you prefer to keep the repo private:
-- **Cloudflare Pages**: Can deploy from private GitHub repos
-- **Netlify**: Can also deploy from private GitHub repos
-
-Both services will serve the files publicly over HTTPS.
-
+Both should return valid JSON responses with `Content-Type: application/json`.

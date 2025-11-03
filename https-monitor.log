@@ -1,0 +1,25 @@
+🚀 Starting HTTPS monitoring for staging-4.dial.wtf
+   Checking every 15 minutes...
+   Maximum attempts: 48 (12 hours)
+   Press Ctrl+C to stop
+
+
+═══════════════════════════════════════════════════════════════
+🕐 Check at 2025-11-03 13:13:11
+═══════════════════════════════════════════════════════════════
+
+📊 GitHub Pages Status:
+  Status: built
+  HTTPS Enforced: false
+  Certificate State: approved
+  Certificate Description: The certificate has been approved.
+
+🧪 Testing HTTPS endpoint...
+  ⏳ HTTPS returned HTTP 404 (not ready yet)
+
+
+⏳ Still waiting for certificate provisioning...
+   Attempt 1 of 48
+
+💤 Sleeping for 15 minutes...
+   Next check in 15 minutes (at 13:28:12)
