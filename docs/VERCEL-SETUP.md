@@ -43,21 +43,23 @@ Vercel will give you a CNAME record. In Dynadot:
 After DNS propagates:
 
 ```bash
-# Check Content-Type header
-curl -I https://staging-4.dial.wtf/.well-known/matrix/server | grep -i content-type
-# Should show: content-type: application/json
+# Check redirects (should show 301 redirect)
+curl -I https://staging-4.dial.wtf/.well-known/matrix/server
+# Should show: HTTP/2 301 and Location: https://matrix.staging-4.dial.wtf/.well-known/matrix/server
 
-# Test endpoints
-curl https://staging-4.dial.wtf/.well-known/matrix/server
-curl https://staging-4.dial.wtf/.well-known/matrix/client
+# Follow redirect and check content
+curl -L https://staging-4.dial.wtf/.well-known/matrix/server
+curl -L https://staging-4.dial.wtf/.well-known/matrix/client
 ```
 
 ## What's Configured
 
-The `vercel.json` file automatically sets:
-- ✅ `Content-Type: application/json` for both files
-- ✅ `Access-Control-Allow-Origin: *` for CORS
-- ✅ Proper headers via Vercel's headers configuration
+The `vercel.json` file automatically redirects:
+- ✅ `/.well-known/matrix/server` → `https://matrix.staging-4.dial.wtf/.well-known/matrix/server`
+- ✅ `/.well-known/matrix/client` → `https://matrix.staging-4.dial.wtf/.well-known/matrix/client`
+- ✅ `/.well-known/matrix/support` → `https://matrix.staging-4.dial.wtf/.well-known/matrix/support`
+
+These are permanent (301) redirects, which is what etke.cc requires for Matrix server delegation.
 
 ## Vercel Free Tier Limits
 
@@ -69,13 +71,16 @@ The `vercel.json` file automatically sets:
 
 ## Troubleshooting
 
-If Content-Type is still wrong:
+If redirects don't work:
 1. Check that `vercel.json` is committed to the repo
-2. Redeploy in Vercel dashboard
-3. Clear browser cache
+2. Redeploy in Vercel dashboard (redirects need redeploy to take effect)
+3. Verify redirects with: `curl -I https://staging-4.dial.wtf/.well-known/matrix/server`
+4. Should show `HTTP/2 301` and `Location: https://matrix.staging-4.dial.wtf/.well-known/matrix/server`
 
 If domain doesn't work:
 1. Wait 30+ minutes for DNS propagation
 2. Check CNAME in Dynadot matches Vercel's instructions
 3. Verify in Vercel dashboard that domain shows "Valid Configuration"
+
+**Important**: Make sure your Matrix server at `matrix.staging-4.dial.wtf` is serving the `.well-known/matrix/*` files correctly, as the redirects point to it.
 
