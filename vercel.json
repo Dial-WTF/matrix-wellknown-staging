@@ -3,17 +3,17 @@
     {
       "source": "/.well-known/matrix/server",
       "destination": "https://matrix.staging-4.dial.wtf/.well-known/matrix/server",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/.well-known/matrix/client",
       "destination": "https://matrix.staging-4.dial.wtf/.well-known/matrix/client",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/.well-known/matrix/support",
       "destination": "https://matrix.staging-4.dial.wtf/.well-known/matrix/support",
-      "permanent": true
+      "statusCode": 301
     }
   ]
 }
